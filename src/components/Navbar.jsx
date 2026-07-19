@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { usuario, cargandoAuth } = useAuth();
+  const { usuario, perfil, cargandoAuth } = useAuth();
 
   async function manejarCerrarSesion() {
     try {
@@ -33,8 +33,26 @@ function Navbar() {
                 Mis reservas
               </Link>
 
+              {perfil?.rol_id === 4 && (
+                <>
+                  <Link className="nav-link" to="/publicar-inmueble">
+                    Publicar alojamiento
+                  </Link>
+
+                  <Link className="nav-link" to="/mis-inmuebles">
+                    Mis alojamientos
+                  </Link>
+                </>
+              )}
+
+              {perfil?.rol_id === 1 && (
+                <Link className="nav-link" to="/admin">
+                  Administración
+                </Link>
+              )}
+
               <span className="navbar-text mx-lg-3">
-                {usuario.email}
+                Hola, {perfil?.nombre ?? usuario.email}
               </span>
 
               <button

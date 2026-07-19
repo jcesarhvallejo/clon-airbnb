@@ -9,7 +9,7 @@ function CardInmueble({ inmueble }) {
 
   return (
     <div className="col">
-      <div className="card h-10 shadow-sm">
+      <div className="card h-100 shadow-sm">
         {fotosOrdenadas.length > 0 ? (
           <div id={carruselId} className="carousel slide">
             <div className="carousel-inner">
@@ -73,7 +73,7 @@ function CardInmueble({ inmueble }) {
           </p>
 
           <p className="fw-bold mt-auto">
-            {Number(inmueble.precio_base).toLocaleString("es-CO", {
+            {(inmueble.precio_base).toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
               maximumFractionDigits: 0,

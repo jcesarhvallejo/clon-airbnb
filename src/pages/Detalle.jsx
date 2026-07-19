@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import GaleriaFotos from "../components/GaleriaFotos";
+import ReservaForm from "../components/ReservaForm";
 import { obtenerInmueblePorId } from "../services/inmuebleService";
 
 function Detalle() {
   const { id } = useParams();
+
   const [inmueble, setInmueble] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
@@ -35,36 +37,23 @@ function Detalle() {
 
   return (
     <section>
-      <h1 className="mb-3 text-dark">{inmueble.nombre}</h1>
+      <h1 className="mb-3">{inmueble.nombre}</h1>
 
       <GaleriaFotos fotos={inmueble.foto} />
 
-      <div className="row">
-        <div className="col-lg-8">
-          <h2 className="mb-3 text-dark">Acerca de este alojamiento</h2>
+      <div className="row g-4">
+        <div className="col-lg-7">
+          <h2>Acerca de este alojamiento</h2>
+
           <p className="text-muted">{inmueble.descripcion}</p>
+
           <p className="mt-3">
             Capacidad para {inmueble.huespedes_base} huéspedes.
           </p>
         </div>
 
-        <aside className="col-lg-4">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h4 className="mb-3">
-                {Number(inmueble.precio_base).toLocaleString("es-CO", {
-                  style: "currency",
-                  currency: "COP",
-                  maximumFractionDigits: 0,
-                })}{" "}
-                por noche
-              </h4>
-
-              <button className="btn btn-danger w-100">
-                Reservar
-              </button>
-            </div>
-          </div>
+        <aside className="col-lg-5">
+          <ReservaForm inmueble={inmueble} />
         </aside>
       </div>
     </section>
