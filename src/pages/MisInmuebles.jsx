@@ -1,38 +1,40 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 import {
   eliminarInmueble,
   obtenerInmueblesAnfitrion,
 } from "../services/inmuebleService";
 
 function MisInmuebles() {
-  const { perfil } = useAuth();
+  const { perfil, cargandoAuth } = useAuth();
 
   const [inmuebles, setInmuebles] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  async function cargarInmuebles() {
-    if (!perfil) return;
-
-    try {
-      setCargando(true);
-      setError("");
-
-      const datos = await obtenerInmueblesAnfitrion(perfil.id_usuario);
-
-      setInmuebles(datos);
-    } catch (error) {
-      console.error(error);
-      setError("No fue posible cargar tus alojamientos.");
-    } finally {
-      setCargando(false);
-    }
-  }
-
   useEffect(() => {
-    cargarInmuebles();
+    if (!perfil) {
+      return undefined;
+    }
+
+    let activo = true;
+
+    obtenerInmueblesAnfitrion(perfil.id_usuario)
+      .then((datos) => {
+        if (activo) setInmuebles(datos);
+      })
+      .catch((error) => {
+        console.error(error);
+        if (activo) setError("No fue posible cargar tus alojamientos.");
+      })
+      .finally(() => {
+        if (activo) setCargando(false);
+      });
+
+    return () => {
+      activo = false;
+    };
   }, [perfil]);
 
   async function manejarEliminar(idInmueble) {
@@ -58,8 +60,16 @@ function MisInmuebles() {
     }
   }
 
-  if (cargando) {
+  if (cargandoAuth || cargando) {
     return <p className="text-center">Cargando alojamientos...</p>;
+  }
+
+  if (!perfil) {
+    return (
+      <div className="alert alert-warning">
+        No se pudo cargar tu perfil de anfitrión.
+      </div>
+    );
   }
 
   return (

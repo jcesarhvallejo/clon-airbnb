@@ -73,7 +73,7 @@ function CardInmueble({ inmueble }) {
           </p>
 
           <p className="fw-bold mt-auto">
-            {(inmueble.precio_base).toLocaleString("es-CO", {
+            {Number(inmueble.precio_base).toLocaleString("es-CO", {
               style: "currency",
               currency: "COP",
               maximumFractionDigits: 0,

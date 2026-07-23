@@ -15,6 +15,7 @@ import Admin from "../pages/Admin";
 import PublicarInmueble from "../pages/PublicarInmueble";
 import MisInmuebles from "../pages/MisInmuebles";
 import EditarInmueble from "../pages/EditarInmueble";
+import NotFound from "../pages/NotFound";
 
 function AppRouter() {
   return (
@@ -68,6 +69,8 @@ function AppRouter() {
           <Route element={<ProtectedRoute rolesPermitidos={[1]} />}>
             <Route path="/admin" element={<Admin />} />
           </Route>
+
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

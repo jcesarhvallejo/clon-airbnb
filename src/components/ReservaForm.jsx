@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 import { crearReserva } from "../services/reservaService";
 
 function ReservaForm({ inmueble }) {
-  const { usuario, perfil } = useAuth();
+  const { usuario, perfil, errorPerfil } = useAuth();
 
   const [fechaEntrada, setFechaEntrada] = useState("");
   const [fechaSalida, setFechaSalida] = useState("");
@@ -98,7 +98,11 @@ function ReservaForm({ inmueble }) {
   }
 
   if (!perfil) {
-    return <p>Cargando perfil...</p>;
+    return (
+      <div className="alert alert-warning">
+        {errorPerfil || "Cargando perfil..."}
+      </div>
+    );
   }
 
   return (
