@@ -40,14 +40,13 @@ function Register() {
 
       const resultado = await registrarUsuario(formulario);
 
-      if (resultado.session) {
-        navigate("/");
-        return;
+      if (!resultado.session) {
+        throw new Error(
+          "La cuenta fue creada, pero Supabase todavía exige confirmar el correo. Desactiva 'Confirm email' en Authentication > Providers > Email."
+        );
       }
 
-      setMensaje(
-        "Registro exitoso. Revisa tu correo para confirmar tu cuenta."
-      );
+      navigate("/");
     } catch (error) {
       console.error(error);
       setError(error.message);
